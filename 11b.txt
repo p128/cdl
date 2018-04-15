@@ -1,0 +1,37 @@
+LEX:
+%{
+#include<stdio.h>
+#include"y.tab.h"
+int yylval;
+%}
+%%
+[0] {return ZERO;}
+[1] {return ONE;}
+[\t]
+. {return yytext[0];}
+[\n] {return 0;}
+[ ] {return 0;}
+%%
+int yywrap()
+{
+return 1;
+}
+
+
+YACC:
+%{
+#include<stdio.h>
+int flag=0;
+%}
+%token ZERO ONE
+%%
+S: L '.' L| L;
+L: L B| B;
+B: ZERO | ONE;
+%%
+main()
+{ printf("enter the expression for the grammar 5\n"); 
+yyparse();
+printf("valid experession\n"); }
+void yyerror()
+{ printf("Invalid expression\n"); exit(1); }
